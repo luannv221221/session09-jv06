@@ -1,8 +1,13 @@
 package ra.bt;
 
+import ra.bt.entity.Category;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ShopManagement {
+    private static List<Category> categories = new ArrayList<>();
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         do {
@@ -27,7 +32,34 @@ public class ShopManagement {
 
                         switch (choice){
                             case 1:
-                                System.out.println("Them moi");
+                                System.out.println("Them moi danh mục ");
+                                Category category = new Category();
+                                category.inputData(scanner,categories);
+                                categories.add(category);
+                                break;
+                            case 2:
+                                System.out.println("Danh saách danh mục ");
+                                for (Category category1 : categories) {
+                                    category1.displayData();
+                                }
+                                break;
+                            case 3:
+                                System.out.println("Nhap vao ma danh mục cân Cập nhật ");
+                                int categoryId = Integer.parseInt(scanner.nextLine());
+                                for (Category category1 : categories) {
+                                    if(category1.getCategoryId() == categoryId){
+                                        ShopManagement.updateCategory(category1,scanner,categories);
+                                    }
+                                }
+                                break;
+                            case 4:
+                                System.out.println("Nhap vao ma danh mục cân can xoa ");
+                                int idDelete = Integer.parseInt(scanner.nextLine());
+                                for (Category category1 : categories) {
+                                    if(category1.getCategoryId() == idDelete){
+                                       categories.remove(category1);
+                                    }
+                                }
                                 break;
                             case 5:
                                 check = false;
@@ -42,5 +74,31 @@ public class ShopManagement {
 
             }
         } while (true);
+    }
+
+    public static boolean checkIdUpdateCategory(int inputId,int idCategory,List<Category> list){
+        if(idCategory == inputId){
+            return true;
+        }
+        for (Category category : list) {
+            if(category.getCategoryId() == inputId){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean updateCategory(Category category,Scanner scanner,List<Category> categories){
+        do {
+            System.out.println("Nhap vao ma danh muc ");
+            int ipInput = Integer.parseInt(scanner.nextLine());
+            if(checkIdUpdateCategory(ipInput,category.getCategoryId(),categories)){
+                //xet lai gia tri moi cho id cua danh muc
+                category.setCategoryId(ipInput);
+                return true;
+            }
+            System.err.println("Da ton tai");
+        } while (true);
+
     }
 }
