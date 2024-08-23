@@ -88,6 +88,17 @@ public class ShopManagement {
         return true;
     }
 
+    public static boolean checkNameUpdateCategory(String inputCategoryName,String categoryName,List<Category> list){
+        if(inputCategoryName.equals(categoryName)){
+            return true;
+        }
+        for (Category category : list) {
+            if(category.getCategoryName().equals(inputCategoryName)){
+                return false;
+            }
+        }
+        return true;
+    }
     public static boolean updateCategory(Category category,Scanner scanner,List<Category> categories){
         do {
             System.out.println("Nhap vao ma danh muc ");
@@ -95,10 +106,22 @@ public class ShopManagement {
             if(checkIdUpdateCategory(ipInput,category.getCategoryId(),categories)){
                 //xet lai gia tri moi cho id cua danh muc
                 category.setCategoryId(ipInput);
-                return true;
+                break;
             }
             System.err.println("Da ton tai");
         } while (true);
-
+        do {
+            System.out.println("Nhập vào tên danh mục ");
+            String categoryNameInput = scanner.nextLine();
+            if(checkNameUpdateCategory(categoryNameInput,category.getCategoryName(),categories)){
+                category.setCategoryName(categoryNameInput);
+               break;
+            }
+            System.out.println("Đã tồn tại ");
+        }while (true);
+        System.out.println("Nhap vao trang thai ");
+        boolean categoryStatusInput = Boolean.parseBoolean(scanner.nextLine());
+        category.setCategoryStatus(categoryStatusInput);
+        return true;
     }
 }
